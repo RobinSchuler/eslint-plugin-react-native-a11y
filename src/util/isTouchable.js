@@ -9,12 +9,12 @@ import { elementType } from 'jsx-ast-utils';
 import type { ESLintContext } from '../../flow/eslint';
 
 const defaultTouchables = {
-  Touchable: true,
-  TouchableOpacity: true,
+  Touchable: false,
+  TouchableOpacity: false,
   TouchableHighlight: true,
   TouchableWithoutFeedback: true,
   TouchableNativeFeedback: true,
-  TouchableBounce: true
+  TouchableBounce: false
 };
 
 export default function isTouchable(
@@ -33,9 +33,9 @@ export default function isTouchable(
   ) {
     const { touchables } = options[0];
     touchables.forEach(touchable => {
-      if (!touchable.startsWith('Touchable')) {
+      if (!touchable.includes('Touchable')) {
         throw Error(
-          `Custom touchable specified in ${context.id} does not start with 'Touchable'`
+          `Custom touchable specified in ${context.id} does not incloude 'Touchable'`
         );
       }
     });

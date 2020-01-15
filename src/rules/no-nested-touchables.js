@@ -13,7 +13,7 @@ import isTouchable from '../util/isTouchable';
 import findChild from '../util/findChild';
 
 const errorMessage =
-  'Elements with accessible={true} must not have any clickable elements inside';
+  'Only Single React Child expected, please wrap in sth like View or Fragment';
 
 const schema = generateObjSchema();
 
@@ -26,22 +26,13 @@ module.exports = {
   create: context => ({
     JSXOpeningElement: node => {
       const { parent } = node;
+      const { children } = parent;
 
-      const accessibleProp = getProp(node.attributes, 'accessible');
-      const accessible = getPropValue(accessibleProp);
-
-      if (accessible) {
-        const clickableChild = findChild(
-          parent,
-          child =>
-            isTouchable(child, context) || elementType(child) === 'Button'
-        );
-        if (clickableChild) {
-          context.report({
-            node,
-            message: errorMessage
-          });
-        }
+      if (!(children && children.length === 1)) {
+        context.report({
+          node,
+          message: errorMessage
+        });
       }
     }
   })
