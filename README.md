@@ -1,5 +1,3 @@
-[![Maintenance Status][maintenance-image]](#maintenance-status)
-
 # eslint-plugin-invariant-violation
 
 checkin single child children in touchables
