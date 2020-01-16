@@ -1,7 +1,7 @@
 /* eslint-env jest */
 /**
  * @fileoverview Enforce if a view has accessible={true}, that there are no clickable elements inside
- * @author Alex Saunders
+ * @author Robin Schuler
  */
 
 // -----------------------------------------------------------------------------
@@ -10,7 +10,7 @@
 
 import { RuleTester } from 'eslint';
 import parserOptionsMapper from '../../__util__/parserOptionsMapper';
-import rule from '../../../src/rules/no-nested-touchables';
+import rule from '../../../src/rules/no-invariant-violation';
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -24,7 +24,7 @@ const expectedError = {
   type: 'JSXOpeningElement'
 };
 
-ruleTester.run('no-nested-touchables', rule, {
+ruleTester.run('no-invariant-violation', rule, {
   valid: [
     {
       code: `<TouchableWithoutFeedback
