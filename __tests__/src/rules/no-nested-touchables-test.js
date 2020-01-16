@@ -20,14 +20,14 @@ const ruleTester = new RuleTester();
 
 const expectedError = {
   message:
-    'Elements with accessible={true} must not have any clickable elements inside',
+    'Only Single React Child expected, please wrap in sth like View or Fragment',
   type: 'JSXOpeningElement'
 };
 
 ruleTester.run('no-nested-touchables', rule, {
   valid: [
     {
-      code: `<TouchableOpacity
+      code: `<TouchableWithoutFeedback
       accessibilityTraits="button"
       accessibilityComponentType="button"
       accessibilityLabel="Tap Me!"
@@ -35,42 +35,25 @@ ruleTester.run('no-nested-touchables', rule, {
     />`
     },
     {
-      code: `<TouchableOpacity
+      code: `<TouchableWithoutFeedback
       accessibilityTraits="button"
       accessibilityComponentType="button"
       accessibilityLabel="Tap Me!"
       accessible={true}
-    ><Text>submit</Text><View><Text>cancel</Text></View></TouchableOpacity>`
+    ><View><Text>submit</Text><View><Text>cancel</Text></View></View></TouchableWithoutFeedback>`
     }
   ].map(parserOptionsMapper),
   invalid: [
     {
-      code: `<TouchableOpacity
+      code: `<TouchableWithoutFeedback
                 accessibilityTraits="button"
                 accessibilityComponentType="button"
                 accessibilityLabel="Tap Me!"
                 accessible={true}
               >
                 <Button />
-              </TouchableOpacity>`,
-      errors: [expectedError]
-    },
-    {
-      code: `<TouchableOpacity
-  accessibilityTraits="button"
-  accessibilityComponentType="button"
-  accessibilityLabel="Tap Me!"
-  accessible={true}
->><View><Text><Button>button</Button></Text></View></TouchableOpacity>`,
-      errors: [expectedError]
-    },
-    {
-      code: `<TouchableOpacity
-  accessibilityTraits="button"
-  accessibilityComponentType="button"
-  accessibilityLabel="Tap Me!"
-  accessible={true}
->><TouchableOpacity><Text>Nested</Text></TouchableOpacity></TouchableOpacity>`,
+                <View/>
+              </TouchableWithoutFeedback>`,
       errors: [expectedError]
     }
   ].map(parserOptionsMapper)

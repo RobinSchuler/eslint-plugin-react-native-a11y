@@ -25,10 +25,24 @@ module.exports = {
 
   create: context => ({
     JSXOpeningElement: node => {
-      const { parent } = node;
-      const { children } = parent;
+      function countOpeningTags(node) {
+        const { parent } = node;
+        const { children } = parent;
+        let count = 0;
+        if (children && children.length > 0) {
+          for (let i = 0; i < children.length; i += 1) {
+            // $FlowFixMe
+            const _child = children[i];
 
-      if (!(children && children.length === 1)) {
+            if (_child.openingElement) {
+              count++;
+            }
+          }
+        }
+        return count;
+      }
+
+      if (isTouchable(node, context) && countOpeningTags(node) > 1) {
         context.report({
           node,
           message: errorMessage
